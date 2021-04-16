@@ -34,5 +34,18 @@ class Chirp < ApplicationRecord
     has_many :likers,
         through: :likes,
         source: :liker
+    
+        
+    #Find all chirps for a particular user
+
+    #Find all chirps liked by people politically affiliated with JavaScript
+
+    #Get only the unique values from the previous query
+
+    #Find all chirps with no likes
+
+    #Find how many likes each chirp has
+
+    #Find chirps with at least 3 likes
 
 end
