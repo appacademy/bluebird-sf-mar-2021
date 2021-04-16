@@ -27,17 +27,27 @@ class User < ApplicationRecord
         through: :likes,
         source: :chirp
     
-     #Find all chirps for a particular user
+    
+    #Get first user record, use first
 
-    #Find all chirps liked by people politically affiliated with JavaScript
+    #Get last user record, use last
 
-    #Get only the unique values from the previous query
+    #Find a user that exists by id, use find
 
-    #Find all chirps with no likes
+    #Find a user that doesn't exist by id, use find
 
-    #Find how many likes each chirp has
+    #Find a user by username, use find_by
+    
+    #Find a user by username that does not exist, use find_by
 
-    #Find chirps with at least 3 likes
+    #Find all users between the ages of 10 and 20 inclusive. Show their username, and political affiliation.
+
+    #Find all users not younger than the age of 11. Use `where.not`
+
+    #Find all political_affiliations of our users
+
+    #Find all users who has a political affiliation in this list and order by ascending
+    #political_affiliations = ["Ruby", "C"]
 
 
 end
