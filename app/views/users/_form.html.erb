@@ -1,0 +1,30 @@
+<% if type == :new %>
+    <% action_url = users_url %>
+    <% button_text = "Create User" %>
+<% elsif type == :edit %>
+    <% action_url = user_url(user) %>
+    <% button_text = "Update User" %>
+<% end %>
+
+<form action=<%= action_url %> method="POST">
+    <% if type == :edit %>
+        <input type="hidden" name="_method" value="PATCH">
+    <% end %>
+    
+    <label for="username">Username: 
+        <input id="username" name="user[username]" type="text" value=<%= user.username %>>
+    </label>
+
+    <label for="email">Email: </label>
+    <input id="email" name="user[email]" type="text" value=<%= user.email %>>
+
+    <label for="age">Age: 
+        <input id="age" name="user[age]" type="text" value=<%= user.age %>>
+    </label>
+
+    <label for="political_affiliation">Political Affiliation: 
+        <input id="political_affiliation" name="user[political_affiliation]" type="text" value="<%= user.political_affiliation %>">
+    </label>
+
+    <input type="submit" value=<%= button_text %>>
+</form>

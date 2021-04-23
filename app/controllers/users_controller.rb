@@ -1,19 +1,28 @@
 class UsersController < ApplicationController
 # class UserController < ApplicationController => This doesn't work
     def index
-        users = User.all
+        @users = User.all
 
-        render json: users
+        # render json: users
+        render :index
     end
 
     def show
         # the key of the wildcard in params, aka :id here, is however the wildcard appears in rails routes
-        user = User.find(params[:id]) #find errors out if the id is not found
+        @user = User.find(params[:id]) #find errors out if the id is not found
 
-        render json: user
+        # render json: user
+        render :show
+    end
+
+    def new 
+        @user = User.new
+
+        render :new
     end
 
     def create
+        # debugger
         # User.new(
         #     username: params[:username],
         #     email: params[:email],
@@ -23,32 +32,42 @@ class UsersController < ApplicationController
         # user = User.new(params[:user])
 
         
-        user = User.new(user_params)
+        @user = User.new(user_params)
 
         # if user.save!  this is throw an error and stop code execution when it fails
-        if user.save # this will return false if it fails
+        if @user.save # this will return false if it fails
             # render json: user
-            redirect_to "/users/#{user.id}"
+            # redirect_to "/users/#{user.id}"
+            redirect_to user_url(@user)
         else
+            debugger
             # the errors.full_messages is from ActiveRecord using our model validations
-            render json: user.errors.full_messages, status: 422
+            # render json: user.errors.full_messages, status: 422
+            render :new
         end
+    end
+
+    def edit 
+        @user = User.find(params[:id])
+
+        render :edit
     end
 
     def update
         user = User.find_by(id: params[:id]) #find_by returns nil when not found
         if user.update(user_params)
-            redirect_to "/users/#{user.id}"
+            # redirect_to "/users/#{user.id}"
+            redirect_to user_url(user)
         else
             render json: user.errors.full_messages, status: 422
         end
-        debugger
     end
 
     def destroy
         user = User.find_by(id: params[:id])
         user.destroy
-        render json: "It is gone"
+        # render json: "It is gone"
+        redirect_to users_url
     end
 
     private

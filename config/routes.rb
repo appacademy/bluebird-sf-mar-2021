@@ -13,7 +13,7 @@ Rails.application.routes.draw do
   # resources :users #gives us all restful routes
   # resources :users, only: [:index, :show, :create, :update, :destroy] gives us only the restful routes in the array
 
-  resources :users, except: [:new, :edit] do # all restful routes except the onlys in the array  resources
+  resources :users do # all restful routes except the onlys in the array  resources
     resources :chirps, only: [:index] # we want a chirp index for each specific user
   end
   resources :chirps, only: :show #you can do no array with a single argument
