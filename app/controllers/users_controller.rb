@@ -1,5 +1,8 @@
 class UsersController < ApplicationController
 # class UserController < ApplicationController => This doesn't work
+    before_action :require_logout, only: [:new, :create]
+    before_action :require_login, only: [:index, :show]
+
     def index
         @users = User.all
 
@@ -38,9 +41,9 @@ class UsersController < ApplicationController
         if @user.save # this will return false if it fails
             # render json: user
             # redirect_to "/users/#{user.id}"
+            login(@user)
             redirect_to user_url(@user)
         else
-            debugger
             # the errors.full_messages is from ActiveRecord using our model validations
             # render json: user.errors.full_messages, status: 422
             render :new
@@ -76,7 +79,7 @@ class UsersController < ApplicationController
     # 1. only allow the keys that we choose (a malicious user could inject their own data into the request)
     # 2. allow us to mass assign and easily add more keys
     def user_params
-        params.require(:user).permit(:username, :email, :age, :political_affiliation)
+        params.require(:user).permit(:username, :email, :age, :political_affiliation, :password)
         # this is saying go into params look for a key of what is in the require() method and look inside that object for the keys included in permit()
     end
 

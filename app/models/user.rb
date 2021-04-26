@@ -7,11 +7,59 @@
 #  email                 :string           not null
 #  age                   :integer          not null
 #  political_affiliation :string           not null
+#  password_digest       :string           not null
+#  session_token         :string           not null
 #
 class User < ApplicationRecord 
     # table names are plural, model names are singular
-    validates :username, :email, presence: true, uniqueness: true
-    validates :age, :political_affiliation, presence: true
+    validates :username, :email, :session_token, presence: true, uniqueness: true
+    validates :age, :political_affiliation, :password_digest, presence: true
+    validates :password, length: { minimum: 6 }, allow_nil: true
+    before_validation :ensure_session_token 
+    # run ensure_session_token right when .save is called
+    # we can also use after_initialize | runs when .new is called
+
+    # SPIRE => self.find_by_credentials, password/password=, is_password?, reset_session_token!, ensure_session_token
+    # These methods do not change. This is how you will write them on Rails 2. KNOW THESE METHODS *HINT HINT*
+
+
+    def self.find_by_credentials(username, password)
+        user = User.find_by(username: username)
+
+        if user && user.is_password?(password)
+            return user
+        else
+            return nil
+        end
+    end
+    
+    def is_password?(password)
+        password_object = BCrypt::Password.new(self.password_digest)
+        # password_object = <BCrypt::Password> instance of Password class that inherits from BCrypt
+        # BCrypt is taking existing digest and returning a BCrypt Password instance
+        password_object.is_password?(password)
+        # this is_password? is BCrypt's is_password function from Password class
+    end
+
+    def password=(password)
+        self.password_digest = BCrypt::Password.create(password)
+        @password = password
+    end 
+
+    def password
+        @password
+    end
+
+    def ensure_session_token
+        self.session_token ||= SecureRandom::urlsafe_base64
+    end
+
+    def reset_session_token!
+        self.session_token = SecureRandom::urlsafe_base64
+        self.save!
+        # Use save! to insure that if there is an error nothing below will run
+        self.session_token
+    end
 
     has_many :chirps, # keep naming conventions semantic, 
         primary_key: :id,

@@ -18,4 +18,7 @@ Rails.application.routes.draw do
   end
   resources :chirps, only: :show #you can do no array with a single argument
 
+  resource :session, only: [:new, :create, :destroy]
+  # sessions are singular: only one login at a time
+
 end
