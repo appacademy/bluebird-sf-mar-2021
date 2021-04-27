@@ -46,6 +46,7 @@ class UsersController < ApplicationController
         else
             # the errors.full_messages is from ActiveRecord using our model validations
             # render json: user.errors.full_messages, status: 422
+            flash.now[:errors] = @user.errors.full_messages # Using flash.now as we are still within the same request
             render :new
         end
     end

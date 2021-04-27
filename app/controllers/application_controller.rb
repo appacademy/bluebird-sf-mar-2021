@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
     #all controller inherit from this controller
     #skips protections FOR TESTING ONLY
-    skip_before_action :verify_authenticity_token
+    # skip_before_action :verify_authenticity_token
     helper_method :current_user, :logged_in? # this allows our views to use these methods    
 
     # CRRLLL => current_user, require_login, (require_logout), login, logged_in? logout
@@ -23,6 +23,7 @@ class ApplicationController < ActionController::Base
 
     def log_out
         current_user.reset_session_token! if logged_in?
+        # debugger
         session[:session_token] = nil
 
         # session {

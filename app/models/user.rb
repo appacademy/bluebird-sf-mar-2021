@@ -24,6 +24,7 @@ class User < ApplicationRecord
 
 
     def self.find_by_credentials(username, password)
+        # debugger
         user = User.find_by(username: username)
 
         if user && user.is_password?(password)
@@ -37,6 +38,7 @@ class User < ApplicationRecord
         password_object = BCrypt::Password.new(self.password_digest)
         # password_object = <BCrypt::Password> instance of Password class that inherits from BCrypt
         # BCrypt is taking existing digest and returning a BCrypt Password instance
+        # debugger
         password_object.is_password?(password)
         # this is_password? is BCrypt's is_password function from Password class
     end
@@ -55,6 +57,7 @@ class User < ApplicationRecord
     end
 
     def reset_session_token!
+        # debugger
         self.session_token = SecureRandom::urlsafe_base64
         self.save!
         # Use save! to insure that if there is an error nothing below will run
