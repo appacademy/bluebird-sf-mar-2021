@@ -1,11 +1,13 @@
 <% if type == :new %>
+    <% header = "Sign Up" %>
     <% action_url = users_url %>
-    <% button_text = "Create User" %>
+    <% button_text = "Sign Up" %>
 <% elsif type == :edit %>
     <% action_url = user_url(user) %>
     <% button_text = "Update User" %>
 <% end %>
 
+<h1><%= header %></h1>
 <form action=<%= action_url %> method="POST">
     <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
 
@@ -32,5 +34,5 @@
         <input id="password" name="user[password]" type="password" value="<%= user.password %>">
     </label>
 
-    <input type="submit" value=<%= button_text %>>
+    <input type="submit" value="<%= button_text %>">
 </form>
